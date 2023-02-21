@@ -1,169 +1,196 @@
-
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  <title></title>
+  <title>CSV Protector</title>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <meta name="robots" content="noindex, nofollow">
   <meta name="googlebot" content="noindex, nofollow">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-  <script
-    type="text/javascript"
-    
-src="//cdnjs.cloudflare.com/ajax/libs/mootools/1.4.5/mootools-core-full-nocompat.js"
-    
-  ></script>
-    <link rel="stylesheet" type="text/css" href="/css/normalize.css">
+  <script type="text/javascript"
+    src="//cdnjs.cloudflare.com/ajax/libs/mootools/1.4.5/mootools-core-full-nocompat.js"></script>
+  <link rel="stylesheet" type="text/css" href="/css/normalize.css">
 
-    <link rel="stylesheet" type="text/css" href="/css/result-light.css">
+  <link rel="stylesheet" type="text/css" href="/css/result-light.css">
 
 
   <style id="compiled-css" type="text/css">
-    
-#holder { border: 10px dashed #ccc; width: 300px; height: 300px; margin: 
-20px auto;}
-#holder.hover { border: 10px dashed #333; }
+    body {
+      text-align: center;
+      padding: 150px;
+    }
 
-    /* EOS */
+    h1 {
+      font-size: 50px;
+    }
+
+    body {
+      font: 20px Helvetica, sans-serif;
+      color: #333;
+    }
+
+    article {
+      display: block;
+      text-align: left;
+      width: 650px;
+      margin: 0 auto;
+    }
+
+    a {
+      color: #dc8100;
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: #333;
+      text-decoration: none;
+    }
+
+    #holder {
+      border: 10px dashed #ccc;
+      width: 300px;
+      height: 300px;
+      margin:
+        20px auto;
+    }
+
+    #holder.hover {
+      border: 10px dashed #333;
+    }
   </style>
 
   <script id="insert"></script>
 
-    <script 
-src="/js/stringify.js?6145cc54326f55ae83af3714188246fc647334e2" 
-charset="utf-8"></script>
-    <script>
-      const customConsole = (w) => {
-        const pushToConsole = (payload, type) => {
-          w.parent.postMessage({
-            console: {
-              payload: stringify(payload),
-              type:    type
-            }
-          }, "*")
-        }
-
-        w.onerror = (message, url, line, column) => {
-          // the line needs to correspond with the editor panel
-          // unfortunately this number needs to be altered every time this 
-view is changed
-          line = line - 70
-          if (line < 0){
-            pushToConsole(message, "error")
-          } else {
-            pushToConsole(`[${line}:${column}] ${message}`, "error")
+  <script src="main.js" charset="utf-8"></script>
+  <script>
+    const customConsole = (w) => {
+      const pushToConsole = (payload, type) => {
+        w.parent.postMessage({
+          console: {
+            payload: stringify(payload),
+            type: type
           }
-        }
-
-        let console = (function(systemConsole){
-          return {
-            log: function(){
-              let args = Array.from(arguments)
-              pushToConsole(args, "log")
-              systemConsole.log.apply(this, args)
-            },
-            info: function(){
-              let args = Array.from(arguments)
-              pushToConsole(args, "info")
-              systemConsole.info.apply(this, args)
-            },
-            warn: function(){
-              let args = Array.from(arguments)
-              pushToConsole(args, "warn")
-              systemConsole.warn.apply(this, args)
-            },
-            error: function(){
-              let args = Array.from(arguments)
-              pushToConsole(args, "error")
-              systemConsole.error.apply(this, args)
-            },
-            system: function(arg){
-              pushToConsole(arg, "system")
-            },
-            clear: function(){
-              systemConsole.clear.apply(this, {})
-            },
-            time: function(){
-              let args = Array.from(arguments)
-              systemConsole.time.apply(this, args)
-            },
-            assert: function(assertion, label){
-              if (!assertion){
-                pushToConsole(label, "log")
-              }
-
-              let args = Array.from(arguments)
-              systemConsole.assert.apply(this, args)
-            }
-          }
-        }(window.console))
-
-        window.console = { ...window.console, ...console }
-
-        console.system("Running fiddle")
+        }, "*")
       }
 
-      if (window.parent){
-        customConsole(window)
+      w.onerror = (message, url, line, column) => {
+        // the line needs to correspond with the editor panel
+        // unfortunately this number needs to be altered every time this view is changed
+        line = line - 70
+        if (line < 0) {
+          pushToConsole(message, "error")
+        } else {
+          pushToConsole(`[${line}:${column}] ${message}`, "error")
+        }
       }
-    </script>
+
+      let console = (function (systemConsole) {
+        return {
+          log: function () {
+            let args = Array.from(arguments)
+            pushToConsole(args, "log")
+            systemConsole.log.apply(this, args)
+          },
+          info: function () {
+            let args = Array.from(arguments)
+            pushToConsole(args, "info")
+            systemConsole.info.apply(this, args)
+          },
+          warn: function () {
+            let args = Array.from(arguments)
+            pushToConsole(args, "warn")
+            systemConsole.warn.apply(this, args)
+          },
+          error: function () {
+            let args = Array.from(arguments)
+            pushToConsole(args, "error")
+            systemConsole.error.apply(this, args)
+          },
+          system: function (arg) {
+            pushToConsole(arg, "system")
+          },
+          clear: function () {
+            systemConsole.clear.apply(this, {})
+          },
+          time: function () {
+            let args = Array.from(arguments)
+            systemConsole.time.apply(this, args)
+          },
+          assert: function (assertion, label) {
+            if (!assertion) {
+              pushToConsole(label, "log")
+            }
+
+            let args = Array.from(arguments)
+            systemConsole.assert.apply(this, args)
+          }
+        }
+      }(window.console))
+
+      window.console = { ...window.console, ...console }
+
+      console.system("Running fiddle")
+    }
+
+    if (window.parent) {
+      customConsole(window)
+    }
+  </script>
 </head>
+
 <body>
-    <article>
-  <div id="holder"></div> 
-  <p id="status">File API & FileReader API not supported</p>
-  <p>Drag a text file from your desktop on to the drop zone above to see 
-the browser read the contents of the file - without uploading the file to 
-any servers.</p>
-</article>
+  <article>
+    <div id="holder"></div>
+    <p id="status">File API & FileReader API not supported</p>
+    <p>Drag a text file from your desktop on to the drop zone above to see
+      the browser read the contents of the file - without uploading the file to
+      any servers.</p>
+  </article>
 
-    <script type="text/javascript">//<![CDATA[
+  <script type="text/javascript">//<![CDATA[
+    var holder = document.getElementById('holder'),
+      state = document.getElementById('status');
 
+    if (typeof window.FileReader === 'undefined') {
+      state.className = 'fail';
+    } else {
+      state.className = 'success';
+      state.innerHTML = 'File API & FileReader available';
+    }
 
-// modified from http://html5demos.com/file-api
-var holder = document.getElementById('holder'),
-    state = document.getElementById('status');
+    holder.ondragover = function () {
+      this.className = 'hover';
+      return false;
+    };
+    holder.ondragend = function () {
+      this.className = '';
+      return false;
+    };
+    holder.ondrop = function (e) {
+      this.className = '';
+      e.preventDefault();
 
-if (typeof window.FileReader === 'undefined') {
-    state.className = 'fail';
-} else {
-    state.className = 'success';
-    state.innerHTML = 'File API & FileReader available';
-}
-
-holder.ondragover = function() {
-    this.className = 'hover';
-    return false;
-};
-holder.ondragend = function() {
-    this.className = '';
-    return false;
-};
-holder.ondrop = function(e) {
-    this.className = '';
-    e.preventDefault();
-
-    var file = e.dataTransfer.files[0],
+      var file = e.dataTransfer.files[0],
         reader = new FileReader();
-    reader.onload = function(event) {
+      reader.onload = function (event) {
         console.log(event.target);
         holder.innerText = event.target.result;
-    };
-    console.log(file);
-    reader.readAsText(file);
+      };
+      console.log(file);
+      reader.readAsText(file);
 
-    return false;
-};
+      return false;
+    };
 
 
   //]]></script>
 
   <script>
     // tell the embed parent frame the height of the content
-    if (window.parent && window.parent.parent){
+    if (window.parent && window.parent.parent) {
       window.parent.parent.postMessage(["resultsFrame", {
         height: document.body.getBoundingClientRect().height,
         slug: "DqcUg"
@@ -174,23 +201,23 @@ holder.ondrop = function(e) {
     window.name = "result"
   </script>
 
-    <script>
-      let allLines = []
+  <script>
+    let allLines = []
 
-      window.addEventListener("message", (message) => {
-        if (message.data.console){
-          let insert = document.querySelector("#insert")
-          allLines.push(message.data.console.payload)
-          insert.innerHTML = allLines.join(";\r")
+    window.addEventListener("message", (message) => {
+      if (message.data.console) {
+        let insert = document.querySelector("#insert")
+        allLines.push(message.data.console.payload)
+        insert.innerHTML = allLines.join(";\r")
 
-          let result = eval.call(null, message.data.console.payload)
-          if (result !== undefined){
-            console.log(result)
-          }
+        let result = eval.call(null, message.data.console.payload)
+        if (result !== undefined) {
+          console.log(result)
         }
-      })
-    </script>
+      }
+    })
+  </script>
 
 </body>
-</html>
 
+</html>
