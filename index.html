@@ -23,6 +23,7 @@
     }
 
     body {
+      position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -36,6 +37,40 @@
           #cfdef3,
           #e0eafc);
       /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    }
+
+    ol>li {
+      margin-left: 20px;
+      padding-left: 15px;
+      padding-bottom: 5px;
+    }
+
+    .intro {
+      max-width: 650px;
+      width: 100%;
+      padding: 30px;
+      padding-top: 50px;
+      padding-bottom: 40px;
+      /* border-radius: 20px;
+      box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px; */
+    }
+
+    .intro div {
+      margin: 10px 0;
+    }
+
+    .toggle-head {
+      cursor: pointer;
+      position: relative;
+      margin: 1px;
+    }
+
+    .toggle-head strong {
+      padding-left: 5px;
+    }
+
+    .toggle-body {
+      display: none
     }
 
     .container {
@@ -150,14 +185,67 @@
     .columns-multiple {
       width: 100%;
     }
+
+    .overlay {
+      position: fixed;
+      display: none;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 2;
+      cursor: pointer;
+    }
+
+    #overlay-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      font-size: 25px;
+      color: white;
+      transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+    }
   </style>
+
+  <div class="intro">
+    <h1>CSV Protect Columns</h1>
+    <div>This tool helps you protect CSV column data from incorrect manipulation when opening in MS Excel.</div>
+    <div>
+      <div class="toggle-head"><i class="fas fa-plus"></i><strong>How to use</strong></div>
+      <div class="toggle-body">
+        <ol>
+          <li>Choose Protect CSV</li>
+          <li>Drag/Drop or Browse for the original CSV file</li>
+          <li>Select the columns to protect</li>
+          <li>Click the download button</li>
+          <li>Edit the downloaded CSV in Excel</li>
+          <li>Return to this page, choose Unprotect CSV</li>
+          <li>Drag/Drop or Browse for the editted CSV file</li>
+          <li>The Unprotected CSV will download automatically</li>
+          <li>Voila!</li>
+        </ol>
+      </div>
+      <div class="toggle-head"><i class="fas fa-plus"></i><strong>How it works</strong></div>
+      <div class="toggle-body">
+        <div>When protecting a CSV the code adds two vertical bars (like "||") to the front of the value in
+          protected columns to ensure that Excel treats the column as text, and leaves it alone!</div>
+        <div>When unprotecting a CSV the code removes all groups of double vertical bars it finds at the beginning of
+          any
+          column value.</div>
+      </div>
+    </div>
+  </div>
 
   <div class="container step1">
     <h4>Step 1</h4>
     <h3>Choose operation</h3>
     <div>
-      <button type="button" class="unprotect operation">Unprotect CSV (after editing)</button>
       <button type="button" class="protect operation">Protect CSV (before editing)</button>
+      <button type="button" class="unprotect operation">Unprotect CSV (after editing)</button>
     </div>
   </div>
 
@@ -185,6 +273,10 @@
     </div>
   </div>
 
+  <div class="overlay">
+    <div id="overlay-text">Reloading...</div>
+  </div>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"
     integrity="sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -210,6 +302,12 @@
         allowClear: true
       });
 
+      $(".toggle-head").click(function () {
+        $(this).next(".toggle-body").slideToggle(100);
+        $(this).find('i').toggleClass('fa-plus');
+        $(this).find('i').toggleClass('fa-minus');
+      });
+
       function setStep(stepNumber) {
         $('.container').addClass('inactive');
         $('.step' + stepNumber.toString()).removeClass('inactive');
@@ -217,7 +315,7 @@
         if (stepNumber == 1) {
           $('.step3').hide();
         } else if (stepNumber == 3) {
-          if ($('.step3').is(':hidden')) {
+          if (operation == "unprotect") {
             downloadUnprotected();
           }
         }
@@ -233,6 +331,13 @@
         document.body.appendChild(element);
         element.click();
         document.body.removeChild(element);
+
+        setTimeout(function () {
+          $(".overlay").fadeIn();
+          setTimeout(function () {
+            window.location.reload(true);
+          }, 3000);
+        }, 1000);
       }
 
       function downloadUnprotected() {
